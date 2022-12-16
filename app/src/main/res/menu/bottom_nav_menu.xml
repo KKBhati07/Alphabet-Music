@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_songs"
+        android:icon="@drawable/music_app_icon_re"
+        android:title="@string/title_songs" />
+
+    <item
+        android:id="@+id/navigation_albums"
+        android:icon="@drawable/new_icon_a"
+        android:title="@string/title_albums" />
+
+    <item
+        android:id="@+id/navigation_playing"
+        android:icon="@drawable/play_icon"
+        android:title="@string/title_playing" />
+
+</menu>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Alphabet Music</string>
+    <string name="title_songs">Songs</string>
+    <string name="title_albums">Albums</string>
+    <string name="title_playing">Playing</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment1">Songs fragment</string>
+    <string name="hello_blank_fragment2">Albums fragment</string>
+    <string name="hello_blank_fragment3">now playing fragment</string>
+    <string name="song_name">Songs Name</string>
+    <string name="artist_name">Artist name</string>
+</resources>
