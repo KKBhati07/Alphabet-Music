@@ -171,6 +171,7 @@
             android:thumbTint="@color/transparent"
             android:fadeScrollbars="true"
             android:layout_marginEnd="22dp"
+            android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"/>
 
 
