@@ -55,7 +55,7 @@ public class PlayingActivity extends AppCompatActivity {
     SeekBar volumeSeekbar;
     AudioManager audioManager;
     ImageView contactActivityBtn;
-    Animation coverArtAnim;
+    Animation coverArtAnim, seekbarAnim, seekbarAnimOut;
     //    private static int change=0;
     private static final int NOTIFICATION_ID = 100;
     private static final String CHANNEL_ID = "100";
@@ -104,11 +104,19 @@ public class PlayingActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                seekbarAnim=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim);
+                seekbarAnim.setFillAfter(true);
+                seekBar.startAnimation(seekbarAnim);
+
 
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                seekbarAnimOut=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim_out);
+                seekbarAnimOut.setFillAfter(true);
+                seekBar.startAnimation(seekbarAnimOut);
+
 
             }
         });
@@ -136,11 +144,17 @@ public class PlayingActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                seekbarAnim=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim);
+                seekbarAnim.setFillAfter(true);
+                seekBar.startAnimation(seekbarAnim);
 
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                seekbarAnim=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim_out);
+                seekbarAnim.setFillAfter(true);
+                seekBar.startAnimation(seekbarAnim);
 
             }
         });
@@ -567,15 +581,7 @@ public class PlayingActivity extends AppCompatActivity {
                     .setContentText(listSongs.get(position).getTitle()).setSubText("NOW PLAYING")
                     .setContentIntent(pi)
                     .build();
-
-
-
         }
         nm.notify(NOTIFICATION_ID,notification);
-
-
     }
-
-
-
 }

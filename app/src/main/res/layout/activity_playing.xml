@@ -85,15 +85,15 @@
 
     <SeekBar
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="9dp"
         android:id="@+id/seekbar_volume"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="36dp"
         android:requiresFadingEdge="horizontal"
         android:layout_marginTop="40dp"
         android:progressDrawable="@drawable/music_seekbar"
         android:thumbTint="@color/transparent"
         android:fadeScrollbars="true"
-        android:layout_marginEnd="35dp"
+        android:layout_marginEnd="36dp"
         android:layout_below="@+id/artistName"/>
 
     <RelativeLayout
@@ -163,14 +163,14 @@
             android:layout_alignParentEnd="true"/>
         <SeekBar
             android:layout_width="match_parent"
-            android:layout_height="12dp"
+            android:layout_height="10dp"
             android:id="@+id/seekbar"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="22dp"
             android:requiresFadingEdge="horizontal"
             android:progressDrawable="@drawable/music_seekbar"
             android:thumbTint="@color/transparent"
             android:fadeScrollbars="true"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="22dp"
             android:layout_alignParentBottom="true"/>
 
 
