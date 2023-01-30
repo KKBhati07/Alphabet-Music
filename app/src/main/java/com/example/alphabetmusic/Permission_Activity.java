@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -42,8 +44,15 @@ public class Permission_Activity extends AppCompatActivity {
                 if (check){
                     startActivity(main);
                 }else{
-                    android.os.Process.killProcess(android.os.Process.myPid());
-                    System.exit(0);
+                    Toast.makeText(this, "Permission Denied, SHUTTING DOWN!", Toast.LENGTH_SHORT).show();
+                    Handler handler=new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            System.exit(0);
+                        }
+                    },4000);
                 }
             }
         }
