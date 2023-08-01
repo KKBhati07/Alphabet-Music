@@ -1,6 +1,7 @@
 package com.example.alphabetmusic;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -12,7 +13,6 @@ import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class SplashScreen extends AppCompatActivity {
     ImageView imgAnim;
@@ -28,27 +28,30 @@ public class SplashScreen extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                //redirecting to main activity, if the permissions are granted
                 if(checkPermission()){
                     Intent main=new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(main);
+                    //to remove the activity from the stack
                     finish();
                 }else{
                     startActivity(permissionActivity);
+                    //to remove the activity from the stack
                     finish();
                 }
             }
         }, 3000);
-
+        //for splash screen animation
         Animation animate = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splash_anim);
         imgAnim.startAnimation(animate);
-
-
     }
 
     public boolean checkPermission() {
-
-        int result = ActivityCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE);
-        return result == PackageManager.PERMISSION_GRANTED;
+        //CHECKING READ PERMISSION
+        int getReadPermission = ActivityCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE);
+        //CHECKING WRITE PERMISSION
+        int getWritePermission = ActivityCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE);
+        return getReadPermission == PackageManager.PERMISSION_GRANTED&&getWritePermission == PackageManager.PERMISSION_GRANTED;
 
     }
 

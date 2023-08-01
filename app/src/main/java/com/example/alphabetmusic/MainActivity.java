@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        ------------------------------------NOTIFICATION----------------------------
         notifyTrackFilesArrayList=new ArrayList<>();
-        populateFiles();
+//        populateFiles();
 
 
 //        ---------------------------------MANAGING FRAGMENTS------------------------------
@@ -48,11 +48,9 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id=item.getItemId();
 
-                if(id==R.id.navigation_songs){
-                    fragManager(new SongsFragment(),1);
-                }else if(id==R.id.navigation_albums){
-                    fragManager(new AlbumsFragment(),1);
-                }else{
+                if(id==R.id.navigation_songs) fragManager(new SongsFragment(),1);
+                else if(id==R.id.navigation_albums) fragManager(new AlbumsFragment(),1);
+                else{
                     Intent playingActivity=new Intent(getApplicationContext(),PlayingActivity.class);
                     playingActivity.putExtra("check",-1);
                     startActivity(playingActivity);
@@ -61,31 +59,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
 //        ---------------------------FETCHING SONGS-------------------------------
         musicFiles=getAllSongs(this);
 
-
-
     }
 
-    private void populateFiles() {
-        NotifyTrackFiles notifyTrackFiles=new NotifyTrackFiles("Song Name","Singer Name",R.drawable.music_app_icon);
-        NotifyTrackFiles notifyTrackFiles1=new NotifyTrackFiles("Song Name","Singer Name",R.drawable.music_app_icon);
-        NotifyTrackFiles notifyTrackFiles2=new NotifyTrackFiles("Song Name","Singer Name",R.drawable.music_app_icon);
-        NotifyTrackFiles notifyTrackFiles3=new NotifyTrackFiles("Song Name","Singer Name",R.drawable.music_app_icon);
-        NotifyTrackFiles notifyTrackFiles4=new NotifyTrackFiles("Song Name","Singer Name",R.drawable.music_app_icon);
-        NotifyTrackFiles notifyTrackFiles5=new NotifyTrackFiles("Song Name","Singer Name",R.drawable.music_app_icon);
-    }
 
     public void fragManager(Fragment fragment,int check){
         FragmentManager fm=getSupportFragmentManager();
         FragmentTransaction ft=fm.beginTransaction();
-        if(check==0){
-            ft.add(R.id.main_container,fragment);
-        }else{
-            ft.replace(R.id.main_container,fragment);
-        }
+        if(check==0) ft.add(R.id.main_container,fragment);
+        else ft.replace(R.id.main_container,fragment);
+
         ft.commit();
 
     }
@@ -113,21 +98,14 @@ public class MainActivity extends AppCompatActivity {
                 String artist=cursor.getString(3);
                 String duration=cursor.getString(4);
                 String ID=cursor.getString(5);
-//                Long albumArt=cursor.getLong(5);
-
-//                Uri uri1=Uri.parse("content://media/external/audio/albumart");
-//                String artUri=Uri.withAppendedPath(uri,albumArt.toString()).toString();
 
                 MusicFilesModel musicFilesModel=new MusicFilesModel(path,title,album,artist,duration,ID);
                 tempAudioList.add(musicFilesModel);
-//                Log.e("PATH",path);
-//                Log.e("ALBUM",album);
 
-
+                // checking for duplicates
                 if(!duplicates.contains(album)){
                     arrAlbums.add(musicFilesModel);
                     duplicates.add(String.valueOf(arrAlbums));
-
                 }
             }
             cursor.close();

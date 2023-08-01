@@ -2,6 +2,7 @@ package com.example.alphabetmusic;
 
 
 import static com.example.alphabetmusic.AlbumDetailsAdapter.albumFiles;
+import static com.example.alphabetmusic.AlbumDetailsAdapter.isPlayingFromAlbum;
 import static com.example.alphabetmusic.MainActivity.musicFiles;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,8 +28,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-//import android.support.annotation.Nullable;
-//import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -98,8 +97,6 @@ public class PlayingActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-
-
             }
 
             @Override
@@ -107,8 +104,6 @@ public class PlayingActivity extends AppCompatActivity {
                 seekbarAnim=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim);
                 seekbarAnim.setFillAfter(true);
                 seekBar.startAnimation(seekbarAnim);
-
-
             }
 
             @Override
@@ -116,12 +111,10 @@ public class PlayingActivity extends AppCompatActivity {
                 seekbarAnimOut=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim_out);
                 seekbarAnimOut.setFillAfter(true);
                 seekBar.startAnimation(seekbarAnimOut);
-
-
             }
         });
 
-
+        //setting click listener on back button
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,17 +122,13 @@ public class PlayingActivity extends AppCompatActivity {
             }
         });
 
-//        artistName.setText(listSongs.get(position).getArtist());
+//        -------------------------------SEEKBAR-------------------------------
+
+        //listener for seekbar change
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (mediaPlayer != null && fromUser) {
-                    mediaPlayer.seekTo(progress * 1000);
-
-
-                }
+                if (mediaPlayer != null && fromUser) mediaPlayer.seekTo(progress * 1000);
             }
 
             @Override
@@ -147,7 +136,6 @@ public class PlayingActivity extends AppCompatActivity {
                 seekbarAnim=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim);
                 seekbarAnim.setFillAfter(true);
                 seekBar.startAnimation(seekbarAnim);
-
             }
 
             @Override
@@ -166,7 +154,6 @@ public class PlayingActivity extends AppCompatActivity {
                     int mCurrentPosition = mediaPlayer.getCurrentPosition() / 1000;
                     seekBar.setProgress(mCurrentPosition);
                     durationPlayed.setText(formattedTime(mCurrentPosition));
-
                 }
                 handler.postDelayed(this, 1000);
             }
@@ -226,23 +213,24 @@ public class PlayingActivity extends AppCompatActivity {
             RelativeLayout mContainer = findViewById(R.id.main_container);
             gradient.setBackgroundResource(R.drawable.gradient_bg);
             mContainer.setBackgroundResource(R.drawable.main_bg);
-
         }
         playingSongName.setText(listSongs.get(position).getTitle());
         artistName.setText(listSongs.get(position).getArtist());
     }
 
+    //to get the intent from other activities
     private void getIntentMethod() {
-
         position = getIntent().getIntExtra("position", position);
         int positions = getIntent().getIntExtra("positions", -1);
         int check = getIntent().getIntExtra("check", 0);
         String sender = getIntent().getStringExtra("sending");
-        if (sender != null && sender.equals("albumDetails00")) {
+        //checking if the music is playing from albums, or getting the intent from albums
+        if (isPlayingFromAlbum||sender != null && sender.equals("albumDetails00")) {
             listSongs = albumFiles;
         } else {
             listSongs = musicFiles; //from main activity
         }
+//        making sure that listSongs is not null
         if (listSongs != null) {
             playPauseBtn.setImageResource(R.drawable.pause_bar_icon);
             uri = Uri.parse(listSongs.get(position).getPath());
@@ -258,15 +246,13 @@ public class PlayingActivity extends AppCompatActivity {
                     coverArtAnim.setFillAfter(true);
                     playPauseBtn.setImageResource(R.drawable.play_icon_filled);
                 }
-//                mediaPlayer.start();
-
             } else {
                 mediaPlayer.stop();
                 mediaPlayer.release();
                 mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
                 mediaPlayer.start();
+                //to automatically play the next song
                 autoplayNextSong();
-
             }
 
         } else {
@@ -284,7 +270,7 @@ public class PlayingActivity extends AppCompatActivity {
         metadata(uri);
         simpleNotification();
     }
-
+    //method to fetch the views
     private void initViews() {
         playingSongName = findViewById(R.id.songName_txt);
         artistName = findViewById(R.id.artistName);
@@ -302,17 +288,16 @@ public class PlayingActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
         nextThreadBtn();
         playPauseThreadBtn();
         previousThreadBtn();
-
         super.onResume();
 
     }
 
-//    --------------------------------------SETTING PLAY PAUSE BUTTONS--------------------------------
+    //    --------------------------------------SETTING PLAY PAUSE BUTTONS--------------------------------
 
+    //autoplay next thread
     private void autoPlayNextThreadMethod() {
         autoPlayNextThread = new Thread() {
             @Override
@@ -324,7 +309,7 @@ public class PlayingActivity extends AppCompatActivity {
         autoPlayNextThread.start();
     }
 
-
+//    play pause thread
     private void playPauseThreadBtn() {
         playPauseThread = new Thread() {
             @Override
@@ -341,7 +326,8 @@ public class PlayingActivity extends AppCompatActivity {
         playPauseThread.start();
     }
 
-    private void playPauseBtnClicked() {
+//    on clicking play pause btn
+    public void playPauseBtnClicked() {
         coverArtAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.album_art_anim);
         coverArt.startAnimation(coverArtAnim);
         if (mediaPlayer.isPlaying()) {
@@ -415,9 +401,8 @@ public class PlayingActivity extends AppCompatActivity {
         nextThread.start();
     }
 
-    private void nextBtnClicked() {
-        Animation bntAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.buttons_anim);
-        nextBtn.startAnimation(bntAnim);
+    public void nextBtnClicked() {
+
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -468,10 +453,9 @@ public class PlayingActivity extends AppCompatActivity {
         simpleNotification();
     }
 
-    private void previousBtnClicked() {
-        Animation bntAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.buttons_anim);
-        previousBtn.startAnimation(bntAnim);
-
+    //method to play previous song, when previous button is clicked
+    public void previousBtnClicked() {
+        //if a song is already playing then,
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -523,6 +507,8 @@ public class PlayingActivity extends AppCompatActivity {
 
     }
 
+
+    //method to autoplay next song, on completion of the current song
     private void autoplayNextSong() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -557,6 +543,7 @@ public class PlayingActivity extends AppCompatActivity {
         }
     }
 
+    //to show a simple notification to the user about the song which is playing
     private void simpleNotification() {
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.music_app_icon_in_png, null);
@@ -584,4 +571,5 @@ public class PlayingActivity extends AppCompatActivity {
         }
         nm.notify(NOTIFICATION_ID,notification);
     }
+
 }

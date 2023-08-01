@@ -1,0 +1,105 @@
+
+>
+java:S1604R"(Make this anonymous inner class a lambda(ï¤·
+>
+java:S1604}"(Make this anonymous inner class a lambda(ã‘Àò
+?
+java:S1604Ë"(Make this anonymous inner class a lambda(»„ö˜
+D
+java:S1604Í"(Make this anonymous inner class a lambda(ĞÛùÿÿÿÿ
+D
+java:S1604‡"(Make this anonymous inner class a lambda(äŸï—ÿÿÿÿÿ
+D
+java:S1604—"(Make this anonymous inner class a lambda(¨™ôçùÿÿÿÿ
+D
+java:S1604"(Make this anonymous inner class a lambda(ÍÜ£ıùÿÿÿÿ
+^
+java:S2259ş"GA "NullPointerException" could be thrown; "listSongs" is nullable here.(™åÕÁ
+\
+java:S2259Î"EA "NullPointerException" could be thrown; "palette" is nullable here.(ş‚³
+k
+java:S2095Ã"TUse try-with-resources or close this "MediaMetadataRetriever" in a "finally" clause.(øæ‚Õ
+Q	java:S125"<This block of commented-out lines of code should be removed.(Š¯á›
+n	java:S116D"YRename this field "duration_Total" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æÄæê
+b
+java:S1659-"GDeclare "artistName" and all following declarations on a separate line.(Æ‘‰Àúÿÿÿÿ
+_
+java:S1659."IDeclare "playPauseBtn" and all following declarations on a separate line.(¶—ÄÓ
+a
+java:S16595"KDeclare "previousThread" and all following declarations on a separate line.(ÉÅÛŞ
+]
+java:S1659:"HDeclare "seekbarAnim" and all following declarations on a separate line.(¾×¥f
+w
+java:S14505"aRemove the "autoPlayNextThread" field and declare it as a local variable in the relevant methods.(ÉÅÛŞ
+o
+java:S14505"YRemove the "nextThread" field and declare it as a local variable in the relevant methods.(ÉÅÛŞ
+t
+java:S14505"^Remove the "playPauseThread" field and declare it as a local variable in the relevant methods.(ÉÅÛŞ
+s
+java:S14505"]Remove the "previousThread" field and declare it as a local variable in the relevant methods.(ÉÅÛŞ
+E
+java:S18744"/Remove this use of "Handler"; it is deprecated.(’Ú©Š
+P	java:S125;"<This block of commented-out lines of code should be removed.(€Šˆ+
+W	java:S125„"<This block of commented-out lines of code should be removed.(Àİ àúÿÿÿÿ
+i
+java:S3776ë"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(ş™Ê
+T
+java:S1854î"=Remove this useless assignment to local variable "positions".(”Æ‹‹
+M
+java:S2696í"6Make the enclosing method "static" or remove this set.(ÂÊÍŞ
+E
+java:S1481î".Remove this unused "positions" local variable.(”Æ‹‹
+M
+java:S2696ò"6Make the enclosing method "static" or remove this set.(¿™¹
+M
+java:S2696ô"6Make the enclosing method "static" or remove this set.(¼ÄÃĞ
+M
+java:S2696ø"6Make the enclosing method "static" or remove this set.(™åÕÁ
+M
+java:S2696ş"6Make the enclosing method "static" or remove this set.(™åÕÁ
+W	java:S125…"<This block of commented-out lines of code should be removed.(Ø€ªµÿÿÿÿÿ
+M
+java:S2696Š"6Make the enclosing method "static" or remove this set.(ÓÔ´À
+M
+java:S2696’"6Make the enclosing method "static" or remove this set.(ÓÔ´À
+M
+java:S2696•"6Make the enclosing method "static" or remove this set.(ÓÔ´À
+W	java:S125ï"<This block of commented-out lines of code should be removed.(Ì¿È±üÿÿÿÿ
+M
+java:S2696¨"6Make the enclosing method "static" or remove this set.(ŒÖ©
+M
+java:S2696©"6Make the enclosing method "static" or remove this set.(™åÕÁ
+M
+java:S2696ª"6Make the enclosing method "static" or remove this set.(ÓÔ´À
+M
+java:S2696¿"6Make the enclosing method "static" or remove this set.(ŒÖ©
+M
+java:S2696À"6Make the enclosing method "static" or remove this set.(™åÕÁ
+M
+java:S2696Á"6Make the enclosing method "static" or remove this set.(ÓÔ´À
+R
+java:S2696Ş"6Make the enclosing method "static" or remove this set.( ø¢şÿÿÿÿ
+M
+java:S2696ß"6Make the enclosing method "static" or remove this set.(™åÕÁ
+M
+java:S2696à"6Make the enclosing method "static" or remove this set.(ÓÔ´À
+R
+java:S2696õ"6Make the enclosing method "static" or remove this set.( ø¢şÿÿÿÿ
+M
+java:S2696ö"6Make the enclosing method "static" or remove this set.(™åÕÁ
+M
+java:S2696÷"6Make the enclosing method "static" or remove this set.(ÓÔ´À
+M
+java:S2696•"6Make the enclosing method "static" or remove this set.(ŒÖ©
+M
+java:S2696–"6Make the enclosing method "static" or remove this set.(™åÕÁ
+M
+java:S2696—"6Make the enclosing method "static" or remove this set.(ÓÔ´À
+O
+java:S1854´"8Remove this useless assignment to local variable "icon".(·Œı
+@
+java:S1481´")Remove this unused "icon" local variable.(·Œı
+J
+java:S1874»".Remove this use of "<init>"; it is deprecated.(ÂÑàáúÿÿÿÿ
+J
+java:S1874Ã".Remove this use of "<init>"; it is deprecated.(‡Ş¨¨üÿÿÿÿ

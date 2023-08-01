@@ -10,7 +10,7 @@ public class ApplicationClass extends Application {
     public static final String CHANNEL_ID_2="CHANNEL_2";
     public static final String ACTION_PREVIOUS="PREVIOUS";
     public static final String ACTION_NEXT="NEXT";
-    public static final String ACTION_PLAY_PAUSE="PLAY PAUSE";
+    public static final String ACTION_PLAY_PAUSE="PLAY_PAUSE";
 
     @Override
     public void onCreate() {
@@ -18,6 +18,7 @@ public class ApplicationClass extends Application {
         createNotificationChannel();
     }
 
+    //creating notification to show which song is playing
     private void createNotificationChannel() {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             NotificationChannel notificationChannel1=new NotificationChannel(CHANNEL_ID_1,"ChanneL One", NotificationManager.IMPORTANCE_HIGH);

@@ -1,5 +1,6 @@
 package com.example.alphabetmusic;
 
+//MODEL TO STORE THE SONGS
 public class MusicFilesModel {
     private String path;
     private String title;
@@ -7,15 +8,6 @@ public class MusicFilesModel {
     private String artist;
     private String duration;
     private String ID;
-
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-//    private String artUri;
 
 
 
@@ -26,19 +18,17 @@ public class MusicFilesModel {
         this.album = album;
         this.duration = duration;
         this.ID=ID;
-//        this.artUri=artUri;
     }
+
     public MusicFilesModel(){
-
     }
 
-//    public String getArtUri() {
-//        return artUri;
-//    }
-//
-//    public void setArtUri(String artUri) {
-//        this.artUri = artUri;
-//    }
+    public String getID() {
+        return ID;
+    }
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getPath() {
         return path;

@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
+//TO LIST THE SONGS IN AN ALBUM
 public class AlbumDetailsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageView albumPhoto, nowPlaying;
@@ -34,16 +33,6 @@ public class AlbumDetailsActivity extends AppCompatActivity {
         albumPhoto=findViewById(R.id.album_details_album_art);
         albumName=getIntent().getStringExtra("albumNames");
         nowPlaying=findViewById(R.id.now_playing_from_album_details);
-
-//        nowPlaying.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent nowPlayingIntent=new Intent(getApplicationContext(),PlayingActivity.class);
-//                nowPlayingIntent.putExtra("check",-1);
-//                nowPlayingIntent.putExtra("sending","albumDetails00");
-//                startActivity(nowPlayingIntent);
-//            }
-//        });
 
         int j=0;
         for(int i=0;i<musicFiles.size();i++){
@@ -62,6 +51,7 @@ public class AlbumDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //if album songs is not empty
         if(!(albumSongss.size()<1)){
             albumDetailsAdapter=new AlbumDetailsAdapter(this,albumSongss);
             recyclerView.setAdapter(albumDetailsAdapter);
@@ -69,11 +59,12 @@ public class AlbumDetailsActivity extends AppCompatActivity {
         }
     }
 
+    //to fetch the album art
     public byte[] getAlbumArt(String uri) {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        retriever.setDataSource(uri);
         byte[] art;
         try {
+            retriever.setDataSource(uri);
             art = retriever.getEmbeddedPicture();
             retriever.release();
             return art;
