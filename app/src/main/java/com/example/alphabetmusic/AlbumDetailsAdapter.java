@@ -1,5 +1,7 @@
 package com.example.alphabetmusic;
 
+import static com.example.alphabetmusic.ApiSongsAdapter.playingFromServer;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -54,6 +56,7 @@ public class AlbumDetailsAdapter extends RecyclerView.Adapter<AlbumDetailsAdapte
                 Intent playing= new Intent(mContext,PlayingActivity.class);
                 //setting it ti true
                 isPlayingFromAlbum=true;
+                playingFromServer=false;
 //                sending data with changing intent
                 playing.putExtra("sending","albumDetails00");
                 playing.putExtra("position",positions);

@@ -3,6 +3,8 @@ package com.example.alphabetmusic;
 
 import static com.example.alphabetmusic.AlbumDetailsAdapter.albumFiles;
 import static com.example.alphabetmusic.AlbumDetailsAdapter.isPlayingFromAlbum;
+import static com.example.alphabetmusic.ApiSongsActivity.songs;
+import static com.example.alphabetmusic.ApiSongsAdapter.playingFromServer;
 import static com.example.alphabetmusic.MainActivity.musicFiles;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,9 +55,8 @@ public class PlayingActivity extends AppCompatActivity {
     static int songPosition;
     SeekBar volumeSeekbar;
     AudioManager audioManager;
-    ImageView contactActivityBtn;
+    ImageView apiSongsActivityBtn;
     Animation coverArtAnim, seekbarAnim, seekbarAnimOut;
-    //    private static int change=0;
     private static final int NOTIFICATION_ID = 100;
     private static final String CHANNEL_ID = "100";
     private static final int PENDING_INTENT_REQ_CODE = 100;
@@ -78,11 +79,12 @@ public class PlayingActivity extends AppCompatActivity {
 
 
 //        -----------------------------TO CONTACTS ACTIVITY-------------------------
-        contactActivityBtn.setOnClickListener(new View.OnClickListener() {
+        apiSongsActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent contactActivity = new Intent(PlayingActivity.this, ContactActivity.class);
-                startActivity(contactActivity);
+                Intent apiSongsActivity = new Intent(PlayingActivity.this, ApiSongsActivity.class);
+                startActivity(apiSongsActivity);
+                finish();
 
             }
         });
@@ -101,14 +103,14 @@ public class PlayingActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                seekbarAnim=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim);
+                seekbarAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.seekbar_anim);
                 seekbarAnim.setFillAfter(true);
                 seekBar.startAnimation(seekbarAnim);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                seekbarAnimOut=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim_out);
+                seekbarAnimOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.seekbar_anim_out);
                 seekbarAnimOut.setFillAfter(true);
                 seekBar.startAnimation(seekbarAnimOut);
             }
@@ -133,14 +135,14 @@ public class PlayingActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                seekbarAnim=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim);
+                seekbarAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.seekbar_anim);
                 seekbarAnim.setFillAfter(true);
                 seekBar.startAnimation(seekbarAnim);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                seekbarAnim=AnimationUtils.loadAnimation(getApplicationContext(),R.anim.seekbar_anim_out);
+                seekbarAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.seekbar_anim_out);
                 seekbarAnim.setFillAfter(true);
                 seekBar.startAnimation(seekbarAnim);
 
@@ -181,7 +183,8 @@ public class PlayingActivity extends AppCompatActivity {
     private void metadata(Uri uri) {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(uri.toString());
-        duration_Total = Integer.parseInt(listSongs.get(position).getDuration()) / 1000;
+//        duration_Total = Integer.parseInt(listSongs.get(position).getDuration()) / 1000;
+        duration_Total = (int) Double.parseDouble(listSongs.get(position).getDuration()) / 1000;
         durationTotal.setText(formattedTime(duration_Total));
         byte[] art = retriever.getEmbeddedPicture();
         if (art != null) {
@@ -225,8 +228,12 @@ public class PlayingActivity extends AppCompatActivity {
         int check = getIntent().getIntExtra("check", 0);
         String sender = getIntent().getStringExtra("sending");
         //checking if the music is playing from albums, or getting the intent from albums
-        if (isPlayingFromAlbum||sender != null && sender.equals("albumDetails00")) {
+        if (isPlayingFromAlbum || sender != null && sender.equals("albumDetails00")) {
             listSongs = albumFiles;
+            //checking, if getting song from api
+        } else if (playingFromServer && songs != null) {
+            listSongs = songs;
+
         } else {
             listSongs = musicFiles; //from main activity
         }
@@ -235,11 +242,19 @@ public class PlayingActivity extends AppCompatActivity {
             playPauseBtn.setImageResource(R.drawable.pause_bar_icon);
             uri = Uri.parse(listSongs.get(position).getPath());
         }
+
         if (mediaPlayer != null) {
             if (check == -1) {
                 if (mediaPlayer.isPlaying()) {
                     playPauseBtn.setImageResource(R.drawable.pause_bar_icon);
-                    uri = Uri.parse(listSongs.get(position).getPath());
+                    if (playingFromServer) {
+//                        uri=Uri.parse(playingSongUrl);
+                        uri = Uri.parse(listSongs.get(position).getPath());
+
+                    } else {
+
+                        uri = Uri.parse(listSongs.get(position).getPath());
+                    }
                 } else {
                     coverArtAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.album_art_anim);
                     coverArt.startAnimation(coverArtAnim);
@@ -270,6 +285,7 @@ public class PlayingActivity extends AppCompatActivity {
         metadata(uri);
         simpleNotification();
     }
+
     //method to fetch the views
     private void initViews() {
         playingSongName = findViewById(R.id.songName_txt);
@@ -283,7 +299,7 @@ public class PlayingActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.back_btn_playing_activity);
         seekBar = findViewById(R.id.seekbar);
         volumeSeekbar = findViewById(R.id.seekbar_volume);
-        contactActivityBtn = findViewById(R.id.contact_btn);
+        apiSongsActivityBtn = findViewById(R.id.contact_btn);
     }
 
     @Override
@@ -309,7 +325,7 @@ public class PlayingActivity extends AppCompatActivity {
         autoPlayNextThread.start();
     }
 
-//    play pause thread
+    //    play pause thread
     private void playPauseThreadBtn() {
         playPauseThread = new Thread() {
             @Override
@@ -326,7 +342,7 @@ public class PlayingActivity extends AppCompatActivity {
         playPauseThread.start();
     }
 
-//    on clicking play pause btn
+    //    on clicking play pause btn
     public void playPauseBtnClicked() {
         coverArtAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.album_art_anim);
         coverArt.startAnimation(coverArtAnim);
@@ -549,11 +565,11 @@ public class PlayingActivity extends AppCompatActivity {
         Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.music_app_icon_in_png, null);
         BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
         Bitmap icon = bitmapDrawable.getBitmap();
-        notificationIntent=new Intent(getApplicationContext(),PlayingActivity.class);
-        notificationIntent.putExtra("check",-1);
+        notificationIntent = new Intent(getApplicationContext(), PlayingActivity.class);
+        notificationIntent.putExtra("check", -1);
 
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        pi=PendingIntent.getActivity(PlayingActivity.this,PENDING_INTENT_REQ_CODE,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        pi = PendingIntent.getActivity(PlayingActivity.this, PENDING_INTENT_REQ_CODE, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new NotificationCompat.Builder(PlayingActivity.this).setLargeIcon(bitmap)
                     .setSmallIcon(R.drawable.music_app_icon_in_png)
@@ -569,7 +585,7 @@ public class PlayingActivity extends AppCompatActivity {
                     .setContentIntent(pi)
                     .build();
         }
-        nm.notify(NOTIFICATION_ID,notification);
+        nm.notify(NOTIFICATION_ID, notification);
     }
 
 }

@@ -8,6 +8,7 @@ public class MusicFilesModel {
     private String artist;
     private String duration;
     private String ID;
+    private String coverArt;
 
 
 
@@ -19,8 +20,24 @@ public class MusicFilesModel {
         this.duration = duration;
         this.ID=ID;
     }
+    public MusicFilesModel(SongsModel songsModel) {
+        this.path = songsModel.getPath();
+        this.title = songsModel.getTitle();
+        this.artist = songsModel.getArtist();
+        this.album = songsModel.getAlbum();
+        this.duration = songsModel.getDuration();
+        this.ID = songsModel.getId();
+        this.coverArt=songsModel.getCoverArt();
+    }
 
     public MusicFilesModel(){
+    }
+
+    public void setCoverArt(String coverArt){
+        this.coverArt=coverArt;
+    }
+    public String getCoverArt(){
+        return coverArt;
     }
 
     public String getID() {

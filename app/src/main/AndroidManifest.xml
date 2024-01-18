@@ -19,6 +19,9 @@
         android:theme="@style/theme_splash_screen"
         tools:targetApi="31">
         <activity
+            android:name=".ApiSongsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ContactActivity"
             android:exported="false">
             <meta-data
@@ -71,7 +74,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
     </application>
 
 </manifest>
