@@ -5,7 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,6 +35,12 @@ public class ApiSongsActivity extends AppCompatActivity {
         init();
         //checking songs are already fetched
         if(songs==null ||songs.isEmpty()){
+            if(!isInternetAvailable()){
+                Toast.makeText(ApiSongsActivity.this,"Internet not available...",Toast.LENGTH_LONG).show();
+                Handler handler=new Handler();
+                handler.postDelayed((Runnable) () -> onBackPressed(),4000);
+                return;
+            }
 
             //to show the progress bar
             progressDialog=new ProgressDialog(this);
@@ -58,6 +68,7 @@ public class ApiSongsActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ApiResponse> call, Throwable throwable) {
+                    Toast.makeText(ApiSongsActivity.this,"Unable to load songs..",Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                     Toast.makeText(ApiSongsActivity.this,"Unable to load songs..",Toast.LENGTH_LONG).show();
                 }
@@ -73,7 +84,16 @@ public class ApiSongsActivity extends AppCompatActivity {
         recyclerView.setAdapter(apiSongsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setVisibility(View.VISIBLE);
+    }
 
+//    to check if device is connected to the internet or not
+    private boolean isInternetAvailable(){
+        ConnectivityManager manager=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(manager!=null){
+            NetworkInfo info=manager.getActiveNetworkInfo();
+            return info!=null && info.isConnected();
+        }
+        return false;
 
     }
 
