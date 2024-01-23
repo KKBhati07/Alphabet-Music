@@ -17,6 +17,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -232,7 +235,15 @@ public class PlayingActivity extends AppCompatActivity {
             listSongs = albumFiles;
             //checking, if getting song from api
         } else if (playingFromServer && songs != null) {
-            listSongs = songs;
+            if(isInternetAvailable()){
+                listSongs = songs;
+            }else{
+                position=0;
+                listSongs=musicFiles;
+                playingFromServer=false;
+                mediaPlayer.stop();
+                mediaPlayer=null;
+            }
 
         } else {
             listSongs = musicFiles; //from main activity
@@ -308,6 +319,16 @@ public class PlayingActivity extends AppCompatActivity {
         playPauseThreadBtn();
         previousThreadBtn();
         super.onResume();
+
+    }
+    //    to check if device is connected to the internet or not
+    private boolean isInternetAvailable(){
+        ConnectivityManager manager=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(manager!=null){
+            NetworkInfo info=manager.getActiveNetworkInfo();
+            return info!=null && info.isConnected();
+        }
+        return false;
 
     }
 

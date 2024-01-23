@@ -4,10 +4,13 @@ package com.example.alphabetmusic;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.ALL;
 import static com.example.alphabetmusic.AlbumDetailsAdapter.isPlayingFromAlbum;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -37,6 +40,9 @@ public class ApiSongsAdapter extends RecyclerView.Adapter<ApiSongsAdapter.myView
     private ArrayList<MusicFilesModel> songs;
     private RequestOptions glideOptions;
 
+    private Handler handler = new Handler();
+    private static final long CHECK_INTERVAL = 1000;
+
     public ApiSongsAdapter(Context context, ArrayList<MusicFilesModel> songs){
         this.context=context;
         this.songs=songs;
@@ -58,23 +64,51 @@ public class ApiSongsAdapter extends RecyclerView.Adapter<ApiSongsAdapter.myView
         holder.artistName.setText(currentSong.getArtist());
         //calling the async method to load album art
         loadAlbumArtAsync(songs.get(position).getCoverArt(), holder.albumArt,position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent playingActivity=new Intent(context,PlayingActivity.class);
-                isPlayingFromAlbum=false;
-                playingActivity.putExtra("position",position);
-                playingActivity.putExtra("songUrl",currentSong.getPath());
-                playingFromServer=true;
-                context.startActivity(playingActivity);
 
-            }
-        });
+        if(!isInternetAvailable()){
+            holder.songTitle.setTextColor(context.getResources().getColor(R.color.grey));
+            holder.artistName.setTextColor(context.getResources().getColor(R.color.grey));
+
+//            handler to check for internet connectivity
+            handler.postDelayed(new Runnable() {
+                @SuppressLint("NotifyDataSetChanged")
+                @Override
+                public void run() {
+//                    if internet is available
+                    if(isInternetAvailable()){
+//                        changing the color scheme to reflect that internet is available
+                        holder.songTitle.setTextColor(context.getResources().getColor(R.color.white));
+                        holder.artistName.setTextColor(context.getResources().getColor(R.color.white));
+                        holder.itemView.setOnClickListener(view -> onClickHandler(position,currentSong));
+                        notifyDataSetChanged();
+//                        setting handler to check again fo the connectivity
+                    }else handler.postDelayed(this,CHECK_INTERVAL);
+                }
+            },CHECK_INTERVAL);
+
+//            if internet is available
+        }else{
+            holder.itemView.setOnClickListener(v -> onClickHandler(position,currentSong));
+            holder.songTitle.setTextColor(context.getResources().getColor(R.color.white));
+            holder.artistName.setTextColor(context.getResources().getColor(R.color.white));
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return songs.size();
+    }
+
+//    method to handle the click functionality
+    private void onClickHandler(int position,MusicFilesModel currentSong){
+        if(!isInternetAvailable())return;
+        Intent playingActivity=new Intent(context,PlayingActivity.class);
+        isPlayingFromAlbum=false;
+        playingActivity.putExtra("position",position);
+        playingActivity.putExtra("songUrl",currentSong.getPath());
+        playingFromServer=true;
+        context.startActivity(playingActivity);
     }
 
     public static class myViewHolder extends RecyclerView.ViewHolder {
@@ -94,6 +128,17 @@ public class ApiSongsAdapter extends RecyclerView.Adapter<ApiSongsAdapter.myView
 
     }
 
+//    method to check device is connected to internet or not
+    private boolean isInternetAvailable(){
+        ConnectivityManager manager=(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(manager!=null){
+            NetworkInfo info=manager.getActiveNetworkInfo();
+            return info!=null && info.isConnected();
+        }
+        return false;
+    }
+
+//    to load album art asynchronously on a separate thread
     private void loadAlbumArtAsync(String path, ImageView imageView, int position) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new Runnable() {
